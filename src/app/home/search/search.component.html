@@ -1,0 +1,26 @@
+<div class="search-panel">
+  <div class="background">
+    <select
+      class="search-country"
+      [disabled]="false"
+      [(ngModel)]="country"
+      (change)="getStates()"
+    >
+      <option>Choose country</option>
+      <option *ngFor="let i of countries">{{ i.name }}</option>
+    </select>
+    <select
+      class="search-state"
+      [disabled]="country !== '' ? false : true"
+      [(ngModel)]="state"
+      (change)="getCities()"
+    >
+      <option>Choose state</option>
+      <option *ngFor="let i of states">{{ i.name }}</option>
+    </select>
+    <select class="search-city" [disabled]="state !== '' ? false : true" (change)="onCityChoosed()">
+      <option>Choose city</option>
+      <option *ngFor="let i of cities">{{ i.name }}</option>
+    </select>
+  </div>
+</div>
