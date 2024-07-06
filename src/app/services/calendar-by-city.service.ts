@@ -15,7 +15,7 @@ export class CalendarByCityService{
   hijri = new EventEmitter<Hijri>();
   gregorian = new EventEmitter<Gregorian>();
 
-  getPrayingTimesByCity(city: string, country: string, whenFind: (num: number) => void) {
+  getPrayingTimesByCity(city: string, country: string) {
     this.http
     .get<{data:PrayerTime}>(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}`)
     .subscribe((result) => {
@@ -23,7 +23,18 @@ export class CalendarByCityService{
       this.hijri.emit(result.data.date.hijri);
       this.gregorian.emit(result.data.date.gregorian);
     });
-    
+  
 
+  }
+
+  getPrayingTimesByLocation(longitude: string, latitude: string){
+    this.http
+    .get<{data:PrayerTime}>(`https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}`)
+    .subscribe((result) => {
+      this.timings.emit(result.data.timings);
+      this.hijri.emit(result.data.date.hijri);
+      this.gregorian.emit(result.data.date.gregorian);
+    });
+  
   }
 }

@@ -13,10 +13,8 @@ import { CalendarByCityService } from '../services/calendar-by-city.service';
 })
 export class HomeComponent {
 
-  constructor(
-    private calendar: CalendarByCityService
-  ){
+
+  constructor(){
     
   }
-
 }

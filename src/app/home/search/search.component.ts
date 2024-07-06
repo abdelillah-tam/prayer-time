@@ -12,11 +12,11 @@ import { MatFormField, MatOption, MatSelect } from '@angular/material/select';
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss'
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent{
 
   countries: { name: string; iso2: string }[] = [];
   states: { name: string; iso2: string }[] = [];
-  cities:  { name: string; iso2: string }[] = [];
+  cities: { name: string; iso2: string }[] = [];
 
   @Output() ctrl = new EventEmitter();
 
@@ -31,32 +31,6 @@ export class SearchComponent implements OnInit {
       this.countries = listOfCountries;
     });
   }
-  ngOnInit(): void {
-    this.calendarByCityService
-      .getPrayingTimesByCity(
-        'tetou',
-        '',
-        (num) => {
-          this.searchFormGroup.controls.city.setValue(`${num}`);
-        });
-  }
-
-  searchFormGroup = new FormGroup({
-    city: new FormControl('', [Validators.nullValidator]),
-    country: new FormControl('', [Validators.nullValidator])
-  });
-
-  getCalendarByCity() {
-
-    this.calendarByCityService
-      .getPrayingTimesByCity(
-        this.searchFormGroup.value.city!,
-        this.searchFormGroup.value.country!,
-        (num) => {
-          this.searchFormGroup.controls.city.setValue(`${num}`);
-        });
-
-  }
 
 
   getStates() {
@@ -66,7 +40,7 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  getCities(){
+  getCities() {
     let foundCountryItem = this.countries.find((element) => element.name === this.country);
     let foundStateItem = this.states.find((element) => element.name === this.state);
     this.countriesService.getCities(foundCountryItem!.iso2, foundStateItem!.iso2, (listOfCities) => {
@@ -75,11 +49,20 @@ export class SearchComponent implements OnInit {
 
   }
 
+  onCityChoosed() {
+    this.calendarByCityService.getPrayingTimesByCity(this.city, this.country);
+  }
 
-  onCityChoosed(){
-    this.calendarByCityService.getPrayingTimesByCity(this.city, this.country, (n) => {
-
-    });
+  getPrayingTimesByLocation() {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.calendarByCityService
+          .getPrayingTimesByLocation(position.coords.longitude.toString(),
+            position.coords.latitude.toString());
+      })
+    } else {
+      console.log('not exist');
+    }
   }
 
 }

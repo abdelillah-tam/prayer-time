@@ -20,6 +20,7 @@ export class ResultComponent {
   gregorian = '';
 
   constructor(private calendarService: CalendarByCityService) {
+    
     this.calendarService.timings.subscribe((result) => {
       this.fajr = result.Fajr;
       this.zhuhr = result.Dhuhr;
