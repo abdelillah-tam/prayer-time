@@ -11,5 +11,6 @@ Prayer Time is designed to know prayer times. By entering your location, the sit
   - Components
   - Services
   - HttpClient
+  - geolocation API
 
 2- SCSS
